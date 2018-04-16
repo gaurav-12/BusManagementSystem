@@ -26,7 +26,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 public class Activity_UserProfile extends AppCompatActivity {
-    BMS_DB_Adapter dbHelper;
     String challanNum;
 
     ViewPager viewPager;
@@ -40,7 +39,6 @@ public class Activity_UserProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
-        dbHelper = new BMS_DB_Adapter(this);
 
         appBar = (AppBarLayout)findViewById(R.id.appbar_profile);
         appBar_BG = (TransitionDrawable)appBar.getBackground();
@@ -115,7 +113,8 @@ public class Activity_UserProfile extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.logout :
-                        dbHelper.userSignedIn(challanNum, false);   // User signed out, thus signedIn parameter's value is given false
+
+                        // Will make the user Logout.
 
                         Intent i = new Intent(Activity_UserProfile.this, MainActivity.class);
                         startActivity(i);
@@ -135,13 +134,11 @@ public class Activity_UserProfile extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        dbHelper.open();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        dbHelper.close();
     }
 
 //  ** Here we set the default menu for the activity to be shown in Toolbar.
@@ -157,7 +154,8 @@ public class Activity_UserProfile extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout :
-                dbHelper.userSignedIn(challanNum, false);   // User signed out, thus signedIn parameter's value is given false
+
+                // Will make the user Logout.
 
                 Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);

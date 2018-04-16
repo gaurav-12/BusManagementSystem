@@ -16,8 +16,6 @@ import android.widget.RelativeLayout;
 
 public class Activity_SignUp extends AppCompatActivity {
 
-    private BMS_DB_Adapter dbHelper;
-
     private EditText challanNum;
     private EditText password;
     private TextInputLayout re_Password_Layout;
@@ -30,8 +28,6 @@ public class Activity_SignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
-        dbHelper = new BMS_DB_Adapter(this);
 
         challanNum = (EditText)findViewById(R.id.challan_num_SignUp);
         password = (EditText)findViewById(R.id.password_SignUp);
@@ -48,13 +44,11 @@ public class Activity_SignUp extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        dbHelper.open();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dbHelper.close();
     }
 
     private void registerButtonsClickListener() {
@@ -85,9 +79,6 @@ public class Activity_SignUp extends AppCompatActivity {
                     // Everything is allright!
                     else {
                         // Adding the account in database.
-                        String cNum = challanNum.getText().toString();
-                        String pass = password.getText().toString();
-                        dbHelper.addAccount(cNum, pass);
 
                         clear_and_deFocus_EditTexts();
 
@@ -101,8 +92,7 @@ public class Activity_SignUp extends AppCompatActivity {
 
     // Checks if Challan Number (Account) is already present
     private boolean accAlreadyPresent() {
-        String chNum = challanNum.getText().toString();
-        return dbHelper.checkIfPresent(chNum);
+        return true; // Just for now ****
     }
 
     private void showSnackBar(int textStringID) {
