@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
     Button signUp_Button;
     EditText challanNum;
     EditText password;
+
+    // Adapter's  instance.
     BMS_DB_Adapter dbHelper;
 
 
