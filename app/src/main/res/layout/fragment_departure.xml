@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.bms.gaurav.busmanagementsystem.Fragment_Departure_Shift">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/dep_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginTop="50dp"
+                android:background="@color/title_bg_gray"
+                android:gravity="fill_vertical|center_horizontal"
+                android:text="@string/select_dep_shift"
+                android:textColor="@color/title_text" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatRadioButton
+                    android:id="@+id/shift_1_dep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/shift_1"
+                    android:textColor="@color/title_text"
+                    app:buttonTint="@color/colorAccentDark" />
+
+                <android.support.v7.widget.AppCompatRadioButton
+                    android:id="@+id/shift_2_dep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginStart="50dp"
+                    android:layout_weight="1"
+                    android:text="@string/shift_2"
+                    android:textColor="@color/title_text"
+                    app:buttonTint="@color/colorAccentDark" />
+
+            </RadioGroup>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/onLock_overlay_dep"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/dep_linear_layout"
+            android:layout_alignTop="@+id/dep_linear_layout"
+            android:clickable="true"
+            android:contentDescription="@string/choice_locked"
+            android:visibility="invisible"
+            app:srcCompat="@color/onlock_overlay" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/lock_button_dep"
+            style="@style/AppTheme.Button"
+            android:layout_width="300dp"
+            android:layout_height="55dp"
+            android:layout_below="@+id/dep_linear_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/button_lock_ul"
+            android:drawableLeft="@drawable/lock_open"
+            android:drawableStart="@drawable/lock_open"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingEnd="80dp"
+            android:paddingLeft="90dp"
+            android:paddingRight="80dp"
+            android:paddingStart="90dp"
+            android:text="@string/choice_unlocked"
+            android:textColor="@color/button_unlocked_bg"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>
