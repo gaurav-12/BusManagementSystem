@@ -2,6 +2,7 @@ package com.bms.gaurav.busmanagementsystem;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -14,28 +15,60 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class Activity_SignUp extends AppCompatActivity {
 
     private EditText challanNum;
     private EditText password;
-    private TextInputLayout re_Password_Layout;
-    private EditText re_Password;
+    private EditText mobileNum;
     private Button signIn_Button;
     private Button signUp_Button;
     private RelativeLayout relativeLayout;
+
+    // Firebase Authorization
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    // Firebase Database
+    FirebaseDatabase mDatabase;
+    DatabaseReference mRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        challanNum = (EditText)findViewById(R.id.challan_num_SignUp);
-        password = (EditText)findViewById(R.id.password_SignUp);
-        re_Password = (EditText)findViewById(R.id.re_password_SignUp);
-        re_Password_Layout = (TextInputLayout)findViewById(R.id.re_Password_Layout);
-        signIn_Button = (Button)findViewById(R.id.to_signin);
-        signUp_Button = (Button)findViewById(R.id.signup);
-        relativeLayout = (RelativeLayout)findViewById(R.id.parent_SnackBar_signup);
+        challanNum = findViewById(R.id.challan_num_signup);
+        password = findViewById(R.id.password_signup);
+        mobileNum = findViewById(R.id.mobile_num_signup);
+        signIn_Button = findViewById(R.id.to_signin);
+        signUp_Button = findViewById(R.id.signup);
+        relativeLayout = findViewById(R.id.parent_SnackBar_signup);
+
+        // Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                if (user != null) {
+                    // User Signed In
+                }
+                else {
+                    // User Signed Out
+                }
+            }
+        };
+
+        // Firebase Database
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference();    // Getting the reference to root
 
         // Method to register OnClick listener for all the buttons in the activity
         registerButtonsClickListener();
@@ -46,9 +79,48 @@ public class Activity_SignUp extends AppCompatActivity {
         super.onResume();
     }
 
+
+    // Attach the listener to your FirebaseAuth instance in the onStart() method and remove it on onStop()
+    // [START]
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    // [END]
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+
+    // Method called when Sign Up button is clicked
+    private void createAccount(String challanNum) {
+        String UserUID = "uid";
+        DatabaseReference chNum = mRef.child(challanNum);
+
+
+        if (chNum.child(UserUID) != null) {     // User's uid is already present! no need of creating a new account.
+            // Do something
+        }
+        else {
+            // Validate the form
+            //...
+
+            // Phone authentication [START]
+
+        }
     }
 
     private void registerButtonsClickListener() {
@@ -66,13 +138,8 @@ public class Activity_SignUp extends AppCompatActivity {
                     showSnackBar(R.string.signUp_UnSuccess);
                 }
                 else {
-                    // Account does not exist already, OK! now check if passwords matched....
-                    if (!re_Password.getText().toString().equals(password.getText().toString())) {
-                        showSnackBar(R.string.wrong_Input);
-                    }
-
                     // Empty fields?
-                    else if (challanNum.getText().toString().equals("") || password.getText().toString().equals("")) {
+                    if (challanNum.getText().toString().equals("") ||  mobileNum.getText().toString().equals("") || password.getText().toString().equals("")) {
                         showSnackBar(R.string.empty_fields);
                     }
 
@@ -96,7 +163,7 @@ public class Activity_SignUp extends AppCompatActivity {
     }
 
     private void showSnackBar(int textStringID) {
-        Snackbar.make(relativeLayout, textStringID, Snackbar.LENGTH_LONG)
+        Snackbar.make(relativeLayout, textStringID, Snackbar.LENGTH_SHORT)
             .show();
     }
 
@@ -104,10 +171,10 @@ public class Activity_SignUp extends AppCompatActivity {
         // Clearing the EditText views' text....
         challanNum.getText().clear();
         password.getText().clear();
-        re_Password.getText().clear();
+        mobileNum.getText().clear();
 
         // Also clear focus form all the EditTexts....
-        re_Password_Layout.clearFocus();
+        mobileNum.clearFocus();
         password.clearFocus();
         challanNum.clearFocus();
     }
