@@ -1,31 +1,15 @@
 package com.bms.gaurav.busmanagementsystem;
 
 
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.animation.TypeEvaluator;
-import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.constraint.solver.widgets.Animator;
-import android.support.transition.Transition;
-import android.support.transition.TransitionSet;
-import android.support.transition.TransitionValues;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class Fragment_Departure_Shift extends Fragment {
 
@@ -45,8 +29,8 @@ public class Fragment_Departure_Shift extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_departure, container, false);
 
         isLocked = false;
-        lock_button = (AppCompatButton)rootView.findViewById(R.id.lock_button_dep);
-        onLock_overlay = (ImageView)rootView.findViewById(R.id.onLock_overlay_dep);
+        lock_button = rootView.findViewById(R.id.lock_button_dep);
+        onLock_overlay = rootView.findViewById(R.id.onLock_overlay_dep);
         //onLock_overlay_transition = (TransitionDrawable)onLock_overlay.getDrawable();
 
         // Depending upon the users data, the lock button's icon's color should change, initially Button in Unlocked.

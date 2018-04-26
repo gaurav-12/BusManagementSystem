@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/otp_dialog_bg"
+    android:padding="22dp">
+
+    <TextView
+        android:id="@+id/message_otp_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:text="@string/enter_otp_message"
+        android:textColor="@color/title_text"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/enter_otp_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/message_otp_dialog"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:ems="10"
+        android:hint="@string/enter_otp_title"
+        android:inputType="number"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColor="@android:color/black"
+        android:textColorHint="@color/textInputLayout_normal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/enter_otp_text"
+        android:layout_marginTop="35dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/verify_button_otp_dialog"
+            style="@style/AppTheme.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_lock_l"
+            android:text="@string/verify_otp_dialog"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/resend_button_otp_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:text="@string/resend_otp_dialog" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/progress_overlay_otp_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:background="@color/offwhite"
+        android:clickable="true"
+        android:visibility="gone"
+        android:focusable="true" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_otp_dialog"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
+        android:layout_centerInParent="true"
+        android:focusable="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

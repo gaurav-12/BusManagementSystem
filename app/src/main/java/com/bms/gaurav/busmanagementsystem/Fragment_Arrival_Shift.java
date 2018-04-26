@@ -2,7 +2,6 @@ package com.bms.gaurav.busmanagementsystem;
 
 
 import android.graphics.PorterDuff;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -33,14 +32,14 @@ public class Fragment_Arrival_Shift extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_arrival, container, false);
         isLocked = false;
-        lock_button = (AppCompatButton)rootView.findViewById(R.id.lock_button_arr);
-        onLock_overlay = (ImageView)rootView.findViewById(R.id.onLock_overlay_arr);
+        lock_button = rootView.findViewById(R.id.lock_button_arr);
+        onLock_overlay = rootView.findViewById(R.id.onLock_overlay_arr);
         //onLock_overlay_transition = (TransitionDrawable)onLock_overlay.getDrawable();
 
         // Depending upon the users data, the lock button's icon's color should change, initially Button in Unlocked.
         lock_button.getCompoundDrawables()[0].setColorFilter(ContextCompat.getColor(getContext(), R.color.button_unlocked_bg), PorterDuff.Mode.SRC_IN);
 
-        spinner = (AppCompatSpinner)rootView.findViewById(R.id.stops_spinner); // **** NOTICE : rootView.findViewById
+        spinner = rootView.findViewById(R.id.stops_spinner); // **** NOTICE : rootView.findViewById
 
         // Populate the spinner with Stops choices
         ArrayAdapter<CharSequence> stops = ArrayAdapter.createFromResource(getContext(), R.array.stops_list,android.R.layout.simple_spinner_item);

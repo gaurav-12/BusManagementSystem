@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Bus Management System</string>
+    <string name="network_error">Please check your network</string>
+
     <string name="sign_in">SIGN IN</string>
     <string name="sign_up">SIGN UP</string>
     <string name="enter_challan_num">Challan Number</string>
@@ -14,7 +16,7 @@
     <string name="logout">Logout</string>
     <string name="no_acc_exist">The Account does not exist</string>
     <string name="wrong_password">Please check the password</string>
-    <string name="empty_fields">Please fill in the fields</string>
+    <string name="empty_fields">Please fill in the field</string>
 
     <string name="select_arr_stop">Select Stop for arrival</string>
     <string name="select_arr_shift">Select Shift for arrival</string>
@@ -26,6 +28,14 @@
     <string name="shift_2">Second Shift</string>
     <string name="choice_locked">locked</string>
     <string name="choice_unlocked">unlocked</string>
+    <string name="enter_otp_message">Please enter the received OTP below and tap Verify</string>
+    <string name="enter_otp_title">Enter OTP</string>
+    <string name="cancel_otp_dialog">Cancel</string>
+    <string name="resend_otp_dialog">Resend</string>
+    <string name="verify_otp_dialog">Verify</string>
+    <string name="invalid_code_otp_dialog">Please re-check the code</string>
+    <string name="code_resent_otp_dialog">Code resent</string>
+    <string name="country_code">+91</string>
 
     <string-array name="stops_list">
         <item>Indore</item>
