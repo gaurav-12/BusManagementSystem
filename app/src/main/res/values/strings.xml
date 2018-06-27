@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Bus Management System</string>
-    <string name="network_error">Please check your network</string>
+    <string name="network_error">Please turn on your Mobile Data or connect to a WiFi network</string>
 
     <string name="sign_in">SIGN IN</string>
     <string name="sign_up">SIGN UP</string>
@@ -36,6 +36,14 @@
     <string name="invalid_code_otp_dialog">Please re-check the code</string>
     <string name="code_resent_otp_dialog">Code resent</string>
     <string name="country_code">+91</string>
+    <string name="challan_num_not_found">No matching Challan Number found. Try checking the Challan Number</string>
+    <string name="acc_already_exist">An account of given Challan Number already exist. Tap Sign In below.</string>
+    <string name="firestore_doc_get_failure">Some problem occured while SignUp, please try after some time</string>
+    <string name="play_services_error">Seems like your device is not supported for Google Play Services</string>
+    <string name="play_services_cancelled">Google Play Service must be Installed or Enabled</string>
+    <string name="invalid_mobile_num">Error Signing In. Please check the Mobile Number.</string>
+    <string name="mobile_num_already_exist">The Mobile Number is already in use.</string>
+    <string name="mobile_num_exist_check_error">An Error occured while Signing Up. Please retry later to resolve.</string>
 
     <string-array name="stops_list">
         <item>Indore</item>

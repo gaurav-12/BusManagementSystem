@@ -2,9 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="300dp"
     android:background="@drawable/otp_dialog_bg"
-    android:padding="22dp">
+    android:paddingBottom="30dp"
+    android:paddingLeft="22dp"
+    android:paddingRight="22dp"
+    android:paddingTop="30dp">
 
     <TextView
         android:id="@+id/message_otp_dialog"
@@ -35,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/enter_otp_text"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="30dp"
         android:orientation="vertical">
 
         <Button
@@ -59,12 +62,12 @@
 
     <View
         android:id="@+id/progress_overlay_otp_dialog"
-        android:layout_width="wrap_content"
-        android:layout_height="250dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         android:background="@color/offwhite"
         android:clickable="true"
-        android:visibility="gone"
-        android:focusable="true" />
+        android:focusable="true"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progressBar_otp_dialog"
