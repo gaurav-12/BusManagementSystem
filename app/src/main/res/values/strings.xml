@@ -2,9 +2,9 @@
     <string name="app_name">Bus Management System</string>
     <string name="network_error">Please turn on your Mobile Data or connect to a WiFi network</string>
 
+    <string name="app_name_short">BMS</string>
     <string name="sign_in">SIGN IN</string>
     <string name="sign_up">SIGN UP</string>
-    <string name="enter_challan_num">Challan Number</string>
     <string name="password_hint">Password</string>
     <string name="or_signup_text">Don\'t have an account already?</string>
     <string name="mobile_num_hint">Mobile number</string>
@@ -12,11 +12,11 @@
     <string name="signUp_Success">Account created successfully!</string>
     <string name="signUp_UnSuccess">Account already exists!</string>
     <string name="password_mismatch">Password not matched</string>
-    <string name="wrong_Input">Passwords not matched!</string>
-    <string name="logout">Logout</string>
-    <string name="no_acc_exist">The Account does not exist</string>
+    <string name="wrong_Input">Error Signing In, try rechecking password</string>
+    <string name="signout">SignOut</string>
+    <string name="no_acc_exist">Account of given Enrollment number is not active. Please Signup.</string>
     <string name="wrong_password">Please check the password</string>
-    <string name="empty_fields">Please fill in the field</string>
+    <string name="invalid_fields">Please fill in the fields correctly</string>
 
     <string name="select_arr_stop">Select Stop for arrival</string>
     <string name="select_arr_shift">Select Shift for arrival</string>
@@ -36,14 +36,28 @@
     <string name="invalid_code_otp_dialog">Please re-check the code</string>
     <string name="code_resent_otp_dialog">Code resent</string>
     <string name="country_code">+91</string>
-    <string name="challan_num_not_found">No matching Challan Number found. Try checking the Challan Number</string>
-    <string name="acc_already_exist">An account of given Challan Number already exist. Tap Sign In below.</string>
-    <string name="firestore_doc_get_failure">Some problem occured while SignUp, please try after some time</string>
+    <string name="enroll_num_not_found">No matching Enrollment Number found. Try checking the Enrollment Number</string>
+    <string name="acc_already_exist">An account of given Enrollment Number is already active. Try Signing in.</string>
+    <string name="firestore_doc_get_failure">Some error occurred, please try after some time</string>
     <string name="play_services_error">Seems like your device is not supported for Google Play Services</string>
     <string name="play_services_cancelled">Google Play Service must be Installed or Enabled</string>
     <string name="invalid_mobile_num">Error Signing In. Please check the Mobile Number.</string>
     <string name="mobile_num_already_exist">The Mobile Number is already in use.</string>
-    <string name="mobile_num_exist_check_error">An Error occured while Signing Up. Please retry later to resolve.</string>
+    <string name="mobile_num_exist_check_error">An Error occurred while Signing Up. Please retry later to resolve.</string>
+    <string name="verification_failure">An Error occurred on our side. Please retry later to resolve.</string>
+    <string name="sign_up_error">An error occurred while creating account. Please retry later to resolve.</string>
+    <string name="empty_fields">Please fill the field(s).</string>
+    <string name="enter_enroll_num">Enrollment Number</string>
+    <string name="enter_email_num">Email</string>
+    <string name="signup_fields_mismatch">Fields entered did not match. Try rechecking the input.</string>
+
+    <string name="password_rules">
+        - Lowercase character (a-z)\n
+        - Uppercase character (A-Z)\n
+        - Digit (0-9)\n
+        - Special character (!@#$&amp;^+=\-*,._?)
+    </string>
+    <string name="sign_in_error">An error occured while Signing In, please try later to resolve</string>
 
     <string-array name="stops_list">
         <item>Indore</item>

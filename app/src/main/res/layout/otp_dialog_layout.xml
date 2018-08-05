@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="300dp"
     android:background="@drawable/otp_dialog_bg"
@@ -63,7 +62,7 @@
     <View
         android:id="@+id/progress_overlay_otp_dialog"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="240dp"
         android:background="@color/offwhite"
         android:clickable="true"
         android:focusable="true"

@@ -1,88 +1,51 @@
 package com.bms.gaurav.busmanagementsystem;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BaseTransientBottomBar;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.net.ConnectivityManagerCompat;
-import android.support.v4.text.TextUtilsCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatEditText;
-import android.text.InputType;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseException;
-import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Text;
+import com.google.firebase.firestore.Source;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class Activity_SignUp extends AppCompatActivity {
 
-    private EditText challanNum;
-    private EditText mobileNum;
-    private String MobileNumber;
-    private Button signIn_Button;
-    private Button signUp_Button;
+    private EditText enrollNum, Email, Password;
+    private TextView PasswordRules;
+    private Button signIn_Button, signUp_Button;
     private RelativeLayout relativeLayout;
     private ProgressBar progressBarSignup;
     private View progressBarSignup_Overlay;
 
-    private Button verify;
-    private Button resend;
-    private View mDialogView;
-    private AlertDialog mOTPDialog;
-    private ProgressBar mOTPDialogProgressBar;
-    private View mOTPDialogProgressOverlay;
-    private EditText mCodeText;
-
     private FirebaseAuth mAuth;
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks onVerificationChangedCallback;
-    private String mVerificationID;
-    private PhoneAuthProvider.ForceResendingToken mResendToken;
-    private Boolean UserVerified;
 
-    private FirebaseFirestore db;
-    private CollectionReference users_list_Reference;
-    private CollectionReference users_Reference;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final CollectionReference USERS_LIST = db.collection("USERS_LIST");
+//    private final CollectionReference USERS = db.collection("USERS");
 
 
     @Override
@@ -90,10 +53,98 @@ public class Activity_SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        challanNum = findViewById(R.id.challan_num_signup);
+        enrollNum = findViewById(R.id.enroll_num_signup);
+        Email = findViewById(R.id.email_signup);
+        Password = findViewById(R.id.password_signup);
+        PasswordRules = findViewById(R.id.password_rules_textview);
 
-        mobileNum = findViewById(R.id.mobile_num_signup);
-        MobileNumber = "+91" + mobileNum.getText().toString();  // Mobile Number text with code(+91).
+        Password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    // Regex in JAVA is Case Sensitive by default. Add (?i) at the beginning for case insensitivity.
+                    if (!(Password.getText().toString().matches(
+                            "^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%&^+=\\-*,._?])(?!.*\\s).{6,}$")))
+                    {
+                        PasswordRules.animate()
+                                .alpha(1f)
+                                .setDuration(250)
+                                .start();
+                    }
+                    else {
+                    }
+                }
+                else{
+                    PasswordRules.animate()
+                            .alpha(0f)
+                            .setDuration(250)
+                            .start();
+                }
+            }
+        });
+
+        Password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!(s.toString().matches(
+                        "^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%&^+=\\-*,._?])(?!.*\\s).{6,}$")))
+                {
+                    PasswordRules.animate()
+                            .alpha(1f)
+                            .setDuration(250)
+                            .start();
+                }
+                else {
+                    PasswordRules.animate()
+                            .alpha(0f)
+                            .setDuration(250)
+                            .start();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+//        mobileNum = findViewById(R.id.mobile_num_signup);
+//        mobileNum.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                /*
+//                Regular Expression for Indian Mobile Number.
+//                    1. ^ asserts position at start of a line
+//                    2. Match a single character present in the list [6-9]
+//                        6-9 a single character in the range between 6 (index 54) and 9 (index 57) (case sensitive)
+//                    3. Match a single character present in the list [0-9]{9}
+//                        {9} Quantifier — Matches exactly 9 times
+//                        0-9 a single character in the range between 0 (index 48) and 9 (index 57) (case sensitive)
+//                    4. $ asserts position at the end of a line
+//                */
+//                if (!(s.toString().matches("^[6-9][0-9]{9}$"))) {
+//                    mobileNum.setError("Invalid Mobile number");
+//                }else {
+//                    Log.d("MOBILE NUMBER : ", "VALID MOBILE NUMBER!");
+//                    mobileNum.setError(null);
+//                }
+//            }
+//        });
 
         signIn_Button = findViewById(R.id.to_signin);
         signUp_Button = findViewById(R.id.signup);
@@ -101,73 +152,9 @@ public class Activity_SignUp extends AppCompatActivity {
         progressBarSignup = findViewById(R.id.progressBar_signup);
         progressBarSignup_Overlay = findViewById(R.id.progress_overlay_signup);
 
-        LayoutInflater inflater = this.getLayoutInflater();
-        mDialogView = inflater.inflate(R.layout.otp_dialog_layout, null);
-        mOTPDialogProgressBar = mDialogView.findViewById(R.id.progressBar_otp_dialog);
-        mOTPDialogProgressOverlay = mDialogView.findViewById(R.id.progress_overlay_otp_dialog);
-        mCodeText = mDialogView.findViewById(R.id.enter_otp_text);
-        mOTPDialog = new AlertDialog.Builder(this)
-                .setView(mDialogView)
-                .create();
-        registerDialogButtonsClickListener();
-
         mAuth = FirebaseAuth.getInstance();
-        onVerificationChangedCallback = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            @Override
-            public void onCodeAutoRetrievalTimeOut(String s) {
-                resend.setEnabled(true);    // Now is the good time to enable Resend button.
-            }
 
-            @Override
-            public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                mVerificationID = s;    // Used to create Credentials
-                mResendToken = forceResendingToken; // Used when resending of code is required
-                Log.d("ON_CODE_SENT :", s);
-
-                // Since the processsing is completed, no need of overlay and progressBar.
-                progressBarSignup_Overlay.setVisibility(View.GONE);
-                progressBarSignup.setVisibility(View.GONE);
-
-                // Code sent successfully, now is the time to show dialog box.
-                mOTPDialog.show();
-                resend.setEnabled(false);   // No need of Resend button initially.
-            }
-
-            // For the case when Verification is completed by AutoRetrievel.
-            @Override
-            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-                Log.d("ON_VERIFICATION_: ", "COMPLETED");
-                UserVerified = true;
-                signInWithPhoneAuthCredential(phoneAuthCredential);
-                mOTPDialog.dismiss();
-                clear_and_deFocus_EditTexts();
-            }
-
-            @Override
-            public void onVerificationFailed(FirebaseException e) {
-                if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                    // Invalid request
-                    Log.d("VERIFICATION FAILED : ", "FirebaseAuthInvalidCredentialsException : " + e.getMessage());
-
-                    // Since the processsing is completed, no need of overlay and progressBar.
-                    progressBarSignup_Overlay.setVisibility(View.GONE);
-                    progressBarSignup.setVisibility(View.GONE);
-
-                    Snackbar.make(relativeLayout, R.string.invalid_mobile_num, Snackbar.LENGTH_SHORT).show();
-                } else if (e instanceof FirebaseTooManyRequestsException) {
-                    // The SMS quota for the project has been exceeded
-                    Snackbar.make(relativeLayout, "An Error occurred on our side. Please retry later to resolve.", Snackbar.LENGTH_LONG).show();
-                }
-            }
-        };
-        UserVerified = false;
-
-        // Method to register OnClick listener for all the buttons in the activity
         registerButtonsClickListener();
-
-        db = FirebaseFirestore.getInstance();
-        users_list_Reference = db.collection("users_list");
-        users_Reference = db.collection("users");
     }
 
     @Override
@@ -220,8 +207,8 @@ public class Activity_SignUp extends AppCompatActivity {
                     progressBarSignup_Overlay.setVisibility(View.VISIBLE);
                     progressBarSignup.setVisibility(View.VISIBLE);
 
-                    // Look for input Challan Number's  document in Firestore's "users" collection
-                    users_list_Reference.document(challanNum.getText().toString()).get()
+                    // Look for input enroll Number's  document in Firestore's "users" collection (in SERVER and not in CACHE).
+                    USERS_LIST.document(enrollNum.getText().toString()).get(Source.SERVER)
 
                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
@@ -237,12 +224,12 @@ public class Activity_SignUp extends AppCompatActivity {
                                         if (document.exists()) {
                                             Log.d("SIGN UP :", "DOCUMENT EXISTS!!");
 
-                                            boolean AccountActive = document.getBoolean("Account Active");  // Is the account active?
+                                            boolean AccountActive = document.getBoolean("ACCOUNT_ACTIVE");  // Is the account active?
 
-                                            if (AccountActive) {    // There is already an Account for the input Challan Number.
+                                            if (AccountActive) {    // There is already an Account for the input chaalan Number.
                                                 Log.d("SIGN UP :", "ACCOUNT ALREADY ACTIVE!!");
 
-                                                // Since the processsing is completed, no need of overlay and progressBar.
+                                                // Since the processing is completed, no need of overlay and progressBar.
                                                 progressBarSignup_Overlay.setVisibility(View.GONE);
                                                 progressBarSignup.setVisibility(View.GONE);
 
@@ -251,60 +238,27 @@ public class Activity_SignUp extends AppCompatActivity {
 
                                             // Ok lets create the account.
                                             else {
-                                                Log.d("SIGN UP :", "ACCOUNT IS NOT ACTIVE!!");
+                                                Log.d("SIGN UP :", "ACCOUNT IS NOT ACTIVE!");
 
-                                                // Query to get documents having their mobile number same as the input.
-                                                Query query = users_list_Reference.whereEqualTo("Mobile Number", mobileNum.getText().toString());
+                                                String userEmail = document.getString("EMAIL");
+                                                String userName = document.getString("NAME");
 
-                                                query.get()
-                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                                if (task.isSuccessful()) {
-                                                                    int docsContainingThisMobNum = task.getResult().getDocuments().size();
+                                                boolean fieldsMatch = userEmail.equals(Email.getText().toString());
 
-                                                                    boolean mobileNumNotExist = (docsContainingThisMobNum == 0);
+                                                if (fieldsMatch){
+                                                    Log.d("SIGN UP :", "FIELDS MATCH: SUCCESSFUL!");
 
-                                                                    Log.d("SIGN UP :", Integer.toString(docsContainingThisMobNum) + " Documents found with the same Mobile Number.");
+                                                    signupUser(userName);
+                                                }
+                                                else {
+                                                    Log.d("SIGN UP :", "FIELDS MATCH: UNSUCCESSFUL!");
 
-                                                                    // But, is the Mobile Number already in use?
-                                                                    if (mobileNumNotExist) {
-                                                                        Log.d("SIGN UP :", "SUCCESS : MOBILE NUMBER NOT IN USE!!");
+                                                    // Since the processing is completed, no need of overlay and progressBar.
+                                                    progressBarSignup_Overlay.setVisibility(View.GONE);
+                                                    progressBarSignup.setVisibility(View.GONE);
 
-                                                                        sendVerificationCode();
-                                                                    }else {
-                                                                        Log.d("SIGN UP :", "ERROR : THE MOBILE NUMBER ALREADY EXIST!!");
-
-                                                                        // Since the processsing is completed, no need of overlay and progressBar.
-                                                                        progressBarSignup_Overlay.setVisibility(View.GONE);
-                                                                        progressBarSignup.setVisibility(View.GONE);
-
-                                                                        Snackbar.make(relativeLayout, R.string.mobile_num_already_exist, Snackbar.LENGTH_SHORT).show();
-                                                                    }
-                                                                }
-                                                                else {
-                                                                    Log.d("SIGN UP :", "ERROR : WHILE CHECKING MOBILE NUMBER'S EXISTENCE!!");
-
-                                                                    // Since the processsing is completed, no need of overlay and progressBar.
-                                                                    progressBarSignup_Overlay.setVisibility(View.GONE);
-                                                                    progressBarSignup.setVisibility(View.GONE);
-
-                                                                    Snackbar.make(relativeLayout, R.string.mobile_num_exist_check_error, Snackbar.LENGTH_SHORT).show();
-                                                                }
-                                                            }
-                                                        })
-                                                        .addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-                                                                Log.d("SIGN UP :", "ERROR : WHILE CHECKING MOBILE NUMBER'S EXISTENCE!!");
-
-                                                                // Since the processsing is completed, no need of overlay and progressBar.
-                                                                progressBarSignup_Overlay.setVisibility(View.GONE);
-                                                                progressBarSignup.setVisibility(View.GONE);
-
-                                                                Snackbar.make(relativeLayout, R.string.mobile_num_exist_check_error, Snackbar.LENGTH_SHORT).show();
-                                                            }
-                                                        });
+                                                    Snackbar.make(relativeLayout, R.string.signup_fields_mismatch, Snackbar.LENGTH_LONG).show();
+                                                }
                                             }
                                         }
 
@@ -312,46 +266,112 @@ public class Activity_SignUp extends AppCompatActivity {
                                         else {
                                             Log.d("SIGN UP :", "DOCUMENT DOES NOT EXIST!!");
 
-                                            // Since the processsing is completed, no need of overlay and progressBar.
+                                            // Since the processing is completed, no need of overlay and progressBar.
                                             progressBarSignup_Overlay.setVisibility(View.GONE);
                                             progressBarSignup.setVisibility(View.GONE);
 
-                                            Snackbar.make(relativeLayout, R.string.challan_num_not_found, Snackbar.LENGTH_LONG).show();
+                                            Snackbar.make(relativeLayout, R.string.enroll_num_not_found, Snackbar.LENGTH_LONG).show();
                                         }
                                     }
 
-                                    // Some problem occured while getting Document.
+                                    // Some problem occurred while getting Document.
                                     else {
-                                        // TODO : Do something.
-                                        Log.d("SIGN UP :", "TASK NOT SUCCESSFUL!!");
+                                        Log.d("SIGN UP :", "TASK NOT SUCCESSFUL: " + task.getException());
 
-                                        // Since the processsing is completed, no need of overlay and progressBar.
+                                        // Since the processing is completed, no need of overlay and progressBar.
                                         progressBarSignup_Overlay.setVisibility(View.GONE);
                                         progressBarSignup.setVisibility(View.GONE);
 
                                         Snackbar.make(relativeLayout, R.string.firestore_doc_get_failure, Snackbar.LENGTH_LONG).show();
                                     }
                                 }
-                            })
-
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d("SIGN UP : ", "TASK FAILURE: " + e.getMessage());
-
-                                    // Since the processsing is completed, no need of overlay and progressBar.
-                                    progressBarSignup_Overlay.setVisibility(View.VISIBLE);
-                                    progressBarSignup.setVisibility(View.VISIBLE);
-
-                                    Snackbar.make(relativeLayout, R.string.firestore_doc_get_failure, Snackbar.LENGTH_LONG).show();
-                                }
-                            })
-                    ;
+                            });
                 }
             }
         });
     }
 
+    private void signupUser(final String name) {
+        mAuth.createUserWithEmailAndPassword(Email.getText().toString(), Password.getText().toString())
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            Log.d("CREATE USER: ", "SUCCESSFUL!");
+
+                            final FirebaseUser user = task.getResult().getUser();
+
+                            final UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(name)
+                                    .build();
+
+                            Map<String, Object> data = new HashMap<>();
+                            data.put("UID", user.getUid());
+                            data.put("ACCOUNT_ACTIVE", true);
+
+                            USERS_LIST.document(enrollNum.getText().toString())
+                                    .update(data)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                Log.d("DOC UPDATE: ", "SUCCESSFUL!");
+
+                                                updateProfile(user, profileUpdates);
+
+                                                // TODO: Also, update phone number.
+                                            }
+                                            else{
+                                                Log.d("DOC UPDATE: ERROR", task.getException().getMessage());
+
+                                                Snackbar.make(relativeLayout, R.string.sign_up_error, Snackbar.LENGTH_LONG).show();
+
+                                                // Since the processing is completed, no need of overlay and progressBar.
+                                                progressBarSignup_Overlay.setVisibility(View.GONE);
+                                                progressBarSignup.setVisibility(View.GONE);
+                                            }
+                                        }
+                                    });
+                        }
+                        else {
+                            Log.d("CREATE USER: ERROR: ", task.getException().getMessage());
+
+                            Snackbar.make(relativeLayout, R.string.sign_up_error, Snackbar.LENGTH_LONG).show();
+
+                            // Since the processing is completed, no need of overlay and progressBar.
+                            progressBarSignup_Overlay.setVisibility(View.GONE);
+                            progressBarSignup.setVisibility(View.GONE);
+                        }
+                    }
+                });
+    }
+
+    private void updateProfile(FirebaseUser user, UserProfileChangeRequest profileUpdates) {
+        user.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Log.d("USER UPDATE: ", "Profile updated!");
+
+                            // TODO: Finish this activity with OK message(if its the last operation of SignUp).
+                            setResult(RESULT_OK);
+                            finish();
+                        }
+                        else {
+                            Log.d("PROFILE UPDATE ERROR: ", task.getException().getMessage());
+
+                            Snackbar.make(relativeLayout, R.string.sign_up_error, Snackbar.LENGTH_LONG).show();
+
+                            // Since the processing is completed, no need of overlay and progressBar.
+                            progressBarSignup_Overlay.setVisibility(View.GONE);
+                            progressBarSignup.setVisibility(View.GONE);
+                        }
+                    }
+                });
+    }
+
+    @NonNull
     private Boolean checkNetworkConnectivity() {
         ConnectivityManager connectivityManager = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
@@ -359,171 +379,36 @@ public class Activity_SignUp extends AppCompatActivity {
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
-    private boolean fieldsValid() {
-        if (TextUtils.isEmpty(challanNum.getText().toString()) ||       // Challan number field empty..
-                TextUtils.isEmpty(mobileNum.getText().toString())) {    // Mobile number field empty.
+//    Email Regex explanation:
 
-            Snackbar.make(relativeLayout, R.string.empty_fields, Snackbar.LENGTH_SHORT).show();
+//         ^ asserts position at start of the string
+//         Match a single character present in the list below [A-Z0-9._%+-]+
+//              + Quantifier — Matches between one and unlimited times, as many times as possible, giving back as needed
+//              A-Z a single character in the range between A (index 65) and Z (index 90) (case insensitive)
+//              0-9 a single character in the range between 0 (index 48) and 9 (index 57) (case insensitive)
+//              ._%+- matches a single character in the list ._%+- (case insensitive).
+//         @ matches the character @ literally (case insensitive).
+//         Match a single character present in the list below [A-Z]{2,4}
+//              {2,4} Quantifier — Matches between 2 and 4 times, as many times as possible, giving back as needed
+//              A-Z a single character in the range between A (index 65) and Z (index 90) (case insensitive)
+//         $ asserts position at the end of the string
+    private boolean fieldsValid() {
+        if (TextUtils.isEmpty(enrollNum.getText().toString()) ||
+                TextUtils.isEmpty(Email.getText().toString()) ||
+                TextUtils.isEmpty(Password.getText().toString()))
+        {
+            Log.d("FIELDS VALIDITY: ", "Fields empty!");
+            Snackbar.make(relativeLayout, R.string.invalid_fields, Snackbar.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (!(Email.getText().toString().matches("^[A-Za-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")) ||
+                !(Password.getText().toString().matches(
+                        "^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%&^+=\\-*,._?])(?!.*\\s).{6,}$")))
+        {
+            Log.d("FIELDS VALIDITY: ", "Email or Password invalid!");
+            Snackbar.make(relativeLayout, R.string.invalid_fields, Snackbar.LENGTH_SHORT).show();
             return false;
         }
         else return true;
-    }
-
-    private void sendVerificationCode() {
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                "+91" + mobileNum.getText().toString(), // Mobile Number
-                10, // Setting time for Auto-Retrieval
-                TimeUnit.SECONDS,   // Unit of time to consider for auto-retrieval
-                this,   // Activity to bind the callbacks
-                onVerificationChangedCallback   // The callback
-        );
-    }
-
-    private void resendVerificationCode() {
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                mobileNum.getText().toString(), // Mobile Number
-                10, // Setting time for Auto-Retrieval
-                TimeUnit.SECONDS,   // Unit of time to consider for auto-retrieval
-                this,   // Activity to bind the callbacks
-                onVerificationChangedCallback,  // The callback
-                mResendToken    // Token to resend the verification code
-        );
-    }
-
-    private void registerDialogButtonsClickListener() {
-        verify = mDialogView.findViewById(R.id.verify_button_otp_dialog);
-        resend = mDialogView.findViewById(R.id.resend_button_otp_dialog);
-
-        verify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // In case verification takes time, a progress bar is displayed.
-                mOTPDialogProgressBar.setVisibility(View.VISIBLE);
-                mOTPDialogProgressOverlay.setVisibility(View.VISIBLE);
-
-                verifyPhoneNumWithCode();
-            }
-        });
-
-        resend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resendVerificationCode();
-                Snackbar.make(mDialogView, R.string.code_resent_otp_dialog, Snackbar.LENGTH_SHORT).show();
-            }
-        });
-
-        mOTPDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                if (UserVerified) {
-                    mCodeText.getText().clear();
-                    Snackbar.make(relativeLayout, "User Verified", Snackbar.LENGTH_SHORT).show();
-
-                    // TODO : To remove this line.
-                    UserVerified = false;
-                }
-            }
-        });
-    }
-
-    private void verifyPhoneNumWithCode() {
-        String code = mCodeText.getText().toString();
-        if (TextUtils.isEmpty(code)) {
-            Snackbar.make(mDialogView, R.string.empty_fields, Snackbar.LENGTH_SHORT).show();
-        }
-        else {
-            mOTPDialogProgressOverlay.setVisibility(View.VISIBLE);
-            mOTPDialogProgressBar.setVisibility(View.VISIBLE);
-            PhoneAuthCredential mPhoneAuthCredential = PhoneAuthProvider.getCredential(mVerificationID, code);
-            signInWithPhoneAuthCredential(mPhoneAuthCredential);
-        }
-    }
-
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential phoneAuthCredential) {
-        mAuth.signInWithCredential(phoneAuthCredential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("SIGN IN :", "SIGN IN COMPLETE!!");
-
-                        mOTPDialogProgressOverlay.setVisibility(View.GONE);
-                        mOTPDialogProgressBar.setVisibility(View.GONE);
-
-                        // Now, since the SignIn is successful, lets put the user's UID in his Firestore Document, and mark him Active in users_list.
-                        if (task.isSuccessful()) {
-
-                            String UID = task.getResult().getUser().getUid();   // Getting the UID.
-                            Log.d("SIGN IN :", "SIGN IN SUCCESSFULL!! " + "UID : " + UID);
-
-                            // Update the User's document's UID.
-                            users_Reference.document(challanNum.getText().toString()).update("UID", UID)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("SIGN IN DATA UPDATE : ", "DocumentSnapshot successfully updated!");
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.e("SIGN IN DATA UPDATE : ", "Error: ", e);
-                                        }
-                                    });
-
-
-                            // Update the user's document's Account Active and Mobile Number fields.
-                            users_list_Reference.document(challanNum.getText().toString()).update("Account Active", true)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("SIGN IN DATA UPDATE : ", "DocumentSnapshot successfully updated!");
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.e("SIGN IN DATA UPDATE : ", "Error: ", e);
-                                        }
-                                    });
-                            users_list_Reference.document(challanNum.getText().toString()).update("Mobile Number", mobileNum.getText().toString())
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("SIGN IN DATA UPDATE : ", "DocumentSnapshot successfully updated!");
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.e("SIGN IN DATA UPDATE : ", "Error: ", e);
-                                        }
-                                    });
-
-
-                            // TODO : Below three lines to be removed, and User will be signed in just after the above process.
-                            mOTPDialog.dismiss();
-                            UserVerified = true;
-                            clear_and_deFocus_EditTexts();
-                        }
-                        else {
-                            Log.w("SIGNIN : ERROR : ", task.getException());
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                Snackbar.make(mDialogView, R.string.invalid_code_otp_dialog, Snackbar.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-                });
-    }
-
-
-    private void clear_and_deFocus_EditTexts() {
-        // Clearing the EditText views' text....
-        challanNum.getText().clear();
-        mobileNum.getText().clear();
-
-        // Also clear focus from all the EditTexts....
-        mobileNum.clearFocus();
-        challanNum.clearFocus();
     }
 }

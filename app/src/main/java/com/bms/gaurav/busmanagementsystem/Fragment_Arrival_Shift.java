@@ -34,7 +34,6 @@ public class Fragment_Arrival_Shift extends Fragment {
         isLocked = false;
         lock_button = rootView.findViewById(R.id.lock_button_arr);
         onLock_overlay = rootView.findViewById(R.id.onLock_overlay_arr);
-        //onLock_overlay_transition = (TransitionDrawable)onLock_overlay.getDrawable();
 
         // Depending upon the users data, the lock button's icon's color should change, initially Button in Unlocked.
         lock_button.getCompoundDrawables()[0].setColorFilter(ContextCompat.getColor(getContext(), R.color.button_unlocked_bg), PorterDuff.Mode.SRC_IN);
@@ -55,6 +54,7 @@ public class Fragment_Arrival_Shift extends Fragment {
         lock_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO: Update LockedTime field to TimeStamp.now(), if task is successful, every time check if current time(TimeStamp.now again) is more than and equal to required time gap.
                 if (isLocked) {
                     // Background
                     lock_button.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.button_lock_ul));

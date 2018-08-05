@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent_SnackBar_signup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,11 +16,11 @@
         android:text="@string/sign_up"
         android:textAllCaps="false"
         android:textColor="@color/colorAccentDark"
-        android:textSize="36sp"
+        android:textSize="28sp"
         android:textStyle="bold" />
 
     <LinearLayout
-        android:layout_width="280dp"
+        android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/sign_up_title"
         android:layout_centerHorizontal="true"
@@ -29,81 +28,126 @@
         android:layout_marginTop="20dp"
         android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
+        <EditText
+            android:id="@+id/enroll_num_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/textInputLayout_normal">
+            android:hint="@string/enter_enroll_num"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:textColor="@android:color/background_dark"
+            android:textColorHint="@color/edittext_hint"
+            android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/challan_num_signup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/enter_challan_num"
-                android:inputType="text"
-                android:maxLines="1"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:textColor="@android:color/background_dark"
-                android:textSize="18sp" />
+        <EditText
+            android:id="@+id/email_signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/enter_email_num"
+            android:inputType="textWebEmailAddress"
+            android:maxLines="1"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:textColor="@android:color/background_dark"
+            android:textColorHint="@color/edittext_hint"
+            android:textSize="16sp" />
 
+        <EditText
+            android:id="@+id/password_signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/password_hint"
+            android:inputType="textWebPassword"
+            android:maxLines="1"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:textColor="@android:color/background_dark"
+            android:textColorHint="@color/edittext_hint"
+            android:textSize="14sp" />
 
-        </android.support.design.widget.TextInputLayout>
+        <!--
+        Linear layout (containing Mobile Number edittext) may be removed.
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
-                android:id="@+id/textView"
-                android:layout_width="30dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:paddingTop="10dp"
                 android:text="@string/country_code"
                 android:textColor="@color/title_text"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="14sp"
+                android:textStyle="normal|bold" />
 
-            <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/mobile_num_signup"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textColorHint="@color/textInputLayout_normal">
-
-                <EditText
-                    android:id="@+id/mobile_num_signup"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="@string/mobile_num_hint"
-                    android:inputType="phone"
-                    android:maxLines="1"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:textColor="@android:color/background_dark"
-                    android:textSize="18sp" />
-            </android.support.design.widget.TextInputLayout>
+                android:hint="@string/mobile_num_hint"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:textColor="@android:color/background_dark"
+                android:textColorHint="@color/edittext_hint"
+                android:textSize="14sp" />
 
         </LinearLayout>
+        -->
 
-        <Button
-            android:id="@+id/signup"
-            style="@style/AppTheme.Button"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/button_primary_p"
-            android:text="@string/sign_up"
-            android:textAllCaps="false" />
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/signup"
+                style="@style/AppTheme.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/button_primary_p"
+                android:text="@string/sign_up"
+                android:textAllCaps="false"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/password_rules_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alpha="0"
+                android:background="@drawable/tooltip_bg"
+                android:clickable="false"
+                android:focusableInTouchMode="false"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="20dp"
+                android:text="@string/password_rules"
+                android:textAllCaps="false"
+                android:textColor="#fe4c0000"
+                android:textSize="14sp"
+                android:visibility="visible" />
+
+        </FrameLayout>
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
         android:orientation="vertical">
 
         <TextView
@@ -111,19 +155,23 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/or_signin_text"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@android:color/darker_gray"
+            android:textSize="13sp"
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/to_signin"
             style="@style/AppTheme.Button.Sec"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="36dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:background="@drawable/button_secondary_b"
             android:text="@string/sign_in"
             android:textAllCaps="false"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
