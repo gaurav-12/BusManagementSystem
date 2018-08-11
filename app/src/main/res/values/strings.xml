@@ -58,6 +58,15 @@
         - Special character (!@#$&amp;^+=\-*,._?)
     </string>
     <string name="sign_in_error">An error occured while Signing In, please try later to resolve</string>
+    <string name="choices_unchanged">No changes observed, all good</string>
+    <string name="updating_stop">Updating Stop...</string>
+    <string name="updated_stop">Stop updated successully!</string>
+    <string name="updating_shift">Updating Shift...</string>
+    <string name="bms_preference_name">BMS_Preferences</string>
+    <string name="pref_stop_key">STOP</string>
+    <string name="pref_shift_key">SHIFT</string>
+    <string name="updated_shift">Shift updated successfully!</string>
+    <string name="stop_shift_update_error">Oops! Unable to update choices</string>
 
     <string-array name="stops_list">
         <item>Indore</item>

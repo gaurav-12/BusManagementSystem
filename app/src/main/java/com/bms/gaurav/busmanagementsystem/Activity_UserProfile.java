@@ -1,6 +1,7 @@
 package com.bms.gaurav.busmanagementsystem;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
@@ -33,10 +34,14 @@ public class Activity_UserProfile extends AppCompatActivity {
     private AppBarLayout appBar;
     private TransitionDrawable appBar_BG;
 
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
+
+        sharedPreferences = getSharedPreferences(getString(R.string.bms_preference_name), MODE_PRIVATE);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -51,7 +56,9 @@ public class Activity_UserProfile extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_nav_drawer);   // Adding NavigationDrawer icon on the AppBar.
-        toolBar.setTitle(mAuth.getCurrentUser().getDisplayName());
+
+//        TODO: Make the statement below work!
+//        toolBar.setTitle(mAuth.getCurrentUser().getDisplayName());
 
         viewPager = findViewById(R.id.view_pager_profile); // Find the view pager that will allow the user to swipe between fragments
 
@@ -144,6 +151,10 @@ public class Activity_UserProfile extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout :  // Logout option on Toolbar menu.
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.apply();
+
                 mAuth.signOut();
 
                 Intent i = new Intent(this, MainActivity.class);

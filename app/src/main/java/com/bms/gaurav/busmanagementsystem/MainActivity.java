@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private View progressBarSignup_Overlay;
 
     FirebaseAuth mAuth;
+    FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final CollectionReference USERS_LIST = db.collection("USERS_LIST");
 //    private final CollectionReference USERS = db.collection("USERS");
@@ -63,6 +64,19 @@ public class MainActivity extends AppCompatActivity {
         progressBarSignup_Overlay = findViewById(R.id.progress_overlay_signin);
 
         mAuth = FirebaseAuth.getInstance();
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {     // Signed In.
+                    Log.d("AUTH STATE CHECK ", "SIGNED IN!");
+
+                    Intent i = new Intent(MainActivity.this, Activity_UserProfile.class);
+                    startActivity(i);
+                    finish();
+                }else Log.d("AUTH STATE CHECK ", "NOT SIGNED IN!");
+            }
+        };
 
         registerButtonsClickListener();
     }
@@ -70,20 +84,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         // When some user is already Signed In, open the user's profile.
-        mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {     // Signed In.
-                    Log.d("AUTH STATE CHECK ", "SIGNED IN!");
-                    Intent i = new Intent(MainActivity.this, Activity_UserProfile.class);
-                    // TODO : Intent's extras will contain Departure and Arrival timing for the user.
-
-                    startActivity(i);
-                    finish();
-                }else Log.d("AUTH STATE CHECK ", "NOT SIGNED IN!");
-            }
-        });
+        mAuth.addAuthStateListener(mAuthStateListener);
         super.onStart();
     }
 
@@ -123,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     Log.d("ACTIVITY RESULT", "USER SIGNED IN SUCCESSFULLY!");
 
-                    // TODO: Profile will be opened with user's timing(Arr and Dep) information.
                     // Start the profile's Activity of User.
                     Intent i = new Intent(MainActivity.this, Activity_UserProfile.class);
                     startActivity(i);
@@ -150,6 +150,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        if (mAuthStateListener != null){
+            mAuth.removeAuthStateListener(mAuthStateListener);
+        }
         super.onStop();
     }
 

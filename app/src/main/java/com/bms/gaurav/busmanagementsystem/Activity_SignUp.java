@@ -1,6 +1,7 @@
 package com.bms.gaurav.busmanagementsystem;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -45,7 +46,9 @@ public class Activity_SignUp extends AppCompatActivity {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final CollectionReference USERS_LIST = db.collection("USERS_LIST");
-//    private final CollectionReference USERS = db.collection("USERS");
+    private final CollectionReference USERS_ARR_COLL = db.collection("USERS_ARR");
+
+    private SharedPreferences sharedPreferences;
 
 
     @Override
@@ -153,6 +156,8 @@ public class Activity_SignUp extends AppCompatActivity {
         progressBarSignup_Overlay = findViewById(R.id.progress_overlay_signup);
 
         mAuth = FirebaseAuth.getInstance();
+
+        sharedPreferences = getSharedPreferences(getString(R.string.bms_preference_name), MODE_PRIVATE);
 
         registerButtonsClickListener();
     }
@@ -354,12 +359,47 @@ public class Activity_SignUp extends AppCompatActivity {
                         if (task.isSuccessful()){
                             Log.d("USER UPDATE: ", "Profile updated!");
 
+                            addDocToUsersArr();
+                        }
+                        else {
+                            Log.d("PROFILE UPDATE ERROR: ", task.getException().getMessage());
+
+                            Snackbar.make(relativeLayout, R.string.sign_up_error, Snackbar.LENGTH_LONG).show();
+
+                            // Since the processing is completed, no need of overlay and progressBar.
+                            progressBarSignup_Overlay.setVisibility(View.GONE);
+                            progressBarSignup.setVisibility(View.GONE);
+                        }
+                    }
+                });
+    }
+
+    private void addDocToUsersArr() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("SHIFT", null);
+        data.put("STOP", null);
+
+        USERS_ARR_COLL.document(mAuth.getCurrentUser().getUid())
+                .set(data)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d("DOC CREATION: ", "TASK COMPLETE!");
+
+                        if (task.isSuccessful()){
+                            Log.d("DOC CREATION: ", "TASK SUCCESSFUL!");
+
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString(getString(R.string.pref_stop_key), null);
+                            editor.putString(getString(R.string.pref_shift_key), null);
+                            editor.apply();
+
                             // TODO: Finish this activity with OK message(if its the last operation of SignUp).
                             setResult(RESULT_OK);
                             finish();
                         }
-                        else {
-                            Log.d("PROFILE UPDATE ERROR: ", task.getException().getMessage());
+                        else{
+                            Log.d("DOC CREATION ERROR: ", task.getException().getMessage());
 
                             Snackbar.make(relativeLayout, R.string.sign_up_error, Snackbar.LENGTH_LONG).show();
 
