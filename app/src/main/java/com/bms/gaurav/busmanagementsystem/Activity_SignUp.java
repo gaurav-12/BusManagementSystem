@@ -389,12 +389,15 @@ public class Activity_SignUp extends AppCompatActivity {
                         if (task.isSuccessful()){
                             Log.d("DOC CREATION: ", "TASK SUCCESSFUL!");
 
+                            // TODO: Finish this activity with OK message and create new Preferences for the user(if its the last operation of SignUp).
+
                             SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString(getString(R.string.pref_stop_key), null);
-                            editor.putString(getString(R.string.pref_shift_key), null);
+                            editor.putString(getString(R.string.pref_stop_arr_key), null);
+                            editor.putString(getString(R.string.pref_shift_arr_key), null);
+                            editor.putString(getString(R.string.pref_stop_dep_key), null);
+                            editor.putString(getString(R.string.pref_shift_dep_key), null);
                             editor.apply();
 
-                            // TODO: Finish this activity with OK message(if its the last operation of SignUp).
                             setResult(RESULT_OK);
                             finish();
                         }

@@ -23,10 +23,31 @@
                 android:layout_marginTop="50dp"
                 android:background="@color/title_bg_gray"
                 android:gravity="fill_vertical|center_horizontal"
+                android:text="@string/select_dep_stop"
+                android:textColor="@color/title_text" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/stops_spinner_dep"
+                android:layout_width="200dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/stops_spinner_dep"
+                android:spinnerMode="dialog"
+                android:textAlignment="center"
+                android:theme="@style/Base.ThemeOverlay.AppCompat.Light" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginTop="50dp"
+                android:background="@color/title_bg_gray"
+                android:gravity="fill_vertical|center_horizontal"
                 android:text="@string/select_dep_shift"
                 android:textColor="@color/title_text" />
 
             <RadioGroup
+                android:id="@+id/radio_group_shift_dep"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
@@ -63,7 +84,7 @@
             android:layout_alignBottom="@+id/dep_linear_layout"
             android:layout_alignTop="@+id/dep_linear_layout"
             android:clickable="true"
-            android:contentDescription="@string/choice_locked"
+            android:contentDescription="@string/choice_lock"
             android:focusable="true"
             android:visibility="gone"
             app:srcCompat="@color/onlock_overlay" />
@@ -84,7 +105,7 @@
             android:layout_below="@+id/dep_linear_layout"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="50dp"
             android:background="@drawable/button_lock_ul"
             android:drawableLeft="@drawable/lock_open"
             android:drawableStart="@drawable/lock_open"
@@ -94,7 +115,7 @@
             android:paddingLeft="90dp"
             android:paddingRight="80dp"
             android:paddingStart="90dp"
-            android:text="@string/choice_unlocked"
+            android:text="@string/choice_unlock"
             android:textColor="@color/button_unlocked_bg"
             android:textSize="18sp" />
 

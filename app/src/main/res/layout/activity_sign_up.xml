@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent_SnackBar_signup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,46 +29,46 @@
         android:layout_marginTop="20dp"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/enroll_num_signup"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enter_enroll_num"
-            android:inputType="text"
-            android:maxLines="1"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:textColor="@android:color/background_dark"
-            android:textColorHint="@color/edittext_hint"
-            android:textSize="16sp" />
+            android:layout_height="match_parent"
+            app:hintEnabled="false">
 
-        <EditText
-            android:id="@+id/email_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="@string/enter_email_num"
-            android:inputType="textWebEmailAddress"
-            android:maxLines="1"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:textColor="@android:color/background_dark"
-            android:textColorHint="@color/edittext_hint"
-            android:textSize="16sp" />
+            <EditText
+                android:id="@+id/enroll_num_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/enter_enroll_num"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:textColor="@android:color/background_dark"
+                android:textColorHint="@color/edittext_hint"
+                android:textSize="16sp" />
+        </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:id="@+id/password_signup"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:hint="@string/password_hint"
-            android:inputType="textWebPassword"
-            android:maxLines="1"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:textColor="@android:color/background_dark"
-            android:textColorHint="@color/edittext_hint"
-            android:textSize="14sp" />
+            app:hintEnabled="false">
+
+            <EditText
+                android:id="@+id/email_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/enter_email_num"
+                android:inputType="textWebEmailAddress"
+                android:maxLines="1"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:textColor="@android:color/background_dark"
+                android:textColorHint="@color/edittext_hint"
+                android:textSize="16sp" />
+        </android.support.design.widget.TextInputLayout>
 
         <!--
         Linear layout (containing Mobile Number edittext) may be removed.
@@ -103,6 +104,28 @@
 
         </LinearLayout>
         -->
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            app:hintEnabled="false">
+
+            <EditText
+                android:id="@+id/password_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/password_hint"
+                android:inputType="textWebPassword"
+                android:maxLines="1"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:textColor="@android:color/background_dark"
+                android:textColorHint="@color/edittext_hint"
+                android:textSize="16sp" />
+
+        </android.support.design.widget.TextInputLayout>
 
         <FrameLayout
             android:layout_width="match_parent"

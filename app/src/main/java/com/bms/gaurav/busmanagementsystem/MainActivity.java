@@ -2,6 +2,7 @@ package com.bms.gaurav.busmanagementsystem;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -47,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final CollectionReference USERS_LIST = db.collection("USERS_LIST");
-//    private final CollectionReference USERS = db.collection("USERS");
 
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 }else Log.d("AUTH STATE CHECK ", "NOT SIGNED IN!");
             }
         };
+
+        sharedPreferences = getSharedPreferences(getString(R.string.bms_preference_name), MODE_PRIVATE);
 
         registerButtonsClickListener();
     }
@@ -258,9 +261,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
-                            Intent i = new Intent(MainActivity.this, Activity_UserProfile.class);
-                            // TODO : Intent's extras will contain Departure and Arrival timing for the user.
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString(getString(R.string.pref_stop_arr_key), null);
+                            editor.putString(getString(R.string.pref_shift_arr_key), null);
+                            editor.putString(getString(R.string.pref_stop_dep_key), null);
+                            editor.putString(getString(R.string.pref_shift_dep_key), null);
+                            editor.apply();
 
+                            Intent i = new Intent(MainActivity.this, Activity_UserProfile.class);
                             startActivity(i);
                             finish();
                         }

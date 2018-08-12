@@ -14,7 +14,7 @@
 
     <color name="button_unlocked_bg">#00e676</color>
     <color name="button_locked_bg">#00c853</color>
-    <color name="button_locked_disabled_bg">#4d4d4d</color>
+    <color name="button_locked_disabled_bg">#818181</color>
 
     <color name="title_bg_gray">#14000000</color>
     <color name="title_text">#c3000000</color>

@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Bus Management System</string>
     <string name="network_error">Please turn on your Mobile Data or connect to a WiFi network</string>
-
     <string name="app_name_short">BMS</string>
+
     <string name="sign_in">SIGN IN</string>
     <string name="sign_up">SIGN UP</string>
     <string name="password_hint">Password</string>
@@ -22,12 +22,14 @@
     <string name="select_arr_shift">Select Shift for arrival</string>
     <string name="select_arrival">Arrival</string>
 
+    <string name="select_dep_stop">Select Stop for departure</string>
     <string name="select_dep_shift">Select Shift for departure</string>
     <string name="select_departure">Departure</string>
+
     <string name="shift_1">First Shift</string>
     <string name="shift_2">Second Shift</string>
-    <string name="choice_locked">locked</string>
-    <string name="choice_unlocked">unlocked</string>
+    <string name="choice_lock">lock</string>
+    <string name="choice_unlock">unlock</string>
     <string name="enter_otp_message">Please enter the received OTP below and tap Verify</string>
     <string name="enter_otp_title">Enter OTP</string>
     <string name="cancel_otp_dialog">Cancel</string>
@@ -57,16 +59,16 @@
         - Digit (0-9)\n
         - Special character (!@#$&amp;^+=\-*,._?)
     </string>
-    <string name="sign_in_error">An error occured while Signing In, please try later to resolve</string>
+    <string name="sign_in_error">An error occurred while Signing In, please try later to resolve</string>
     <string name="choices_unchanged">No changes observed, all good</string>
-    <string name="updating_stop">Updating Stop...</string>
-    <string name="updated_stop">Stop updated successully!</string>
-    <string name="updating_shift">Updating Shift...</string>
+    <string name="updated_stop">Stop updated successfully!</string>
     <string name="bms_preference_name">BMS_Preferences</string>
-    <string name="pref_stop_key">STOP</string>
-    <string name="pref_shift_key">SHIFT</string>
     <string name="updated_shift">Shift updated successfully!</string>
     <string name="stop_shift_update_error">Oops! Unable to update choices</string>
+    <string name="pref_stop_dep_key">STOP_DEP</string>
+    <string name="pref_shift_dep_key">SHIFT_DEP</string>
+    <string name="pref_stop_arr_key">STOP_ARR</string>
+    <string name="pref_shift_arr_key">SHIFT_ARR</string>
 
     <string-array name="stops_list">
         <item>Indore</item>

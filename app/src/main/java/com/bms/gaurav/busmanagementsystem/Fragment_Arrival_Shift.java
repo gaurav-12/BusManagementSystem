@@ -34,7 +34,6 @@ import java.util.Map;
 
 public class Fragment_Arrival_Shift extends Fragment {
     private Context context;
-    private View rootView;
 
     private RadioGroup shiftGroup;
     private int shiftI, shiftII;
@@ -75,7 +74,7 @@ public class Fragment_Arrival_Shift extends Fragment {
         isLocked = false;
 
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_arrival, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_arrival, container, false);
 
         shiftGroup = rootView.findViewById(R.id.radio_group_shift_arr);
         shiftI = R.id.shift_1_arr;
@@ -96,10 +95,7 @@ public class Fragment_Arrival_Shift extends Fragment {
         onLock_overlay = rootView.findViewById(R.id.onLock_overlay_arr);
         progressBar = rootView.findViewById(R.id.progressBar_arr);
 
-        // Depending upon the users data, the lock button's icon's color should change, initially Button in Unlocked.
-        lock_button.getCompoundDrawables()[0].setColorFilter(ContextCompat.getColor(getContext(), R.color.button_unlocked_bg), PorterDuff.Mode.SRC_IN);
-
-        spinnerStops = rootView.findViewById(R.id.stops_spinner); // **** NOTICE : rootView.findViewById
+        spinnerStops = rootView.findViewById(R.id.stops_spinner_arr); // NOTICE : rootView.findViewById
 
         spinnerStops.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -137,8 +133,8 @@ public class Fragment_Arrival_Shift extends Fragment {
     }
 
     private void occupyFields() {
-        String stop = sharedPreferences.getString(getString(R.string.pref_stop_key), null);
-        String shift = sharedPreferences.getString(getString(R.string.pref_shift_key), null);
+        String stop = sharedPreferences.getString(getString(R.string.pref_stop_arr_key), null);
+        String shift = sharedPreferences.getString(getString(R.string.pref_shift_arr_key), null);
         if ((stop != null) && (shift != null)){
             spinnerStops.setSelection(stopsAdapter.getPosition(stop));
             shiftGroup.check(shift.equals("I") ? shiftI : shiftII);
@@ -152,7 +148,7 @@ public class Fragment_Arrival_Shift extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!checkNetworkConnectivity()){
-                    Toast.makeText(getContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.network_error, Toast.LENGTH_LONG).show();
                 }
                 else if (isLocked) {
                     Log.d("LOCK UNLOCK: ", "UNLOCKING NOW...");
@@ -164,8 +160,9 @@ public class Fragment_Arrival_Shift extends Fragment {
 
                     // Fields changed, do something....
                     if (isShiftChanged || isStopChanged){
-                        lockUnlockTransition("LOCK");
+                        onLock_overlay.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.VISIBLE);
+                        lock_button.setEnabled(false);
 
                         if (isShiftChanged && isStopChanged){
                             Log.d("UPDATING CHOICES: ", "SHIFT AND STOP!");
@@ -206,8 +203,6 @@ public class Fragment_Arrival_Shift extends Fragment {
     }
 
     private void updateStop(final Boolean UPDATE_SHIFT) {
-        Toast.makeText(context, R.string.updating_stop, Toast.LENGTH_SHORT).show();
-
         Map<String, Object> data = new HashMap<>();
         data.put("STOP", Stop);
 
@@ -220,15 +215,19 @@ public class Fragment_Arrival_Shift extends Fragment {
                             Log.d("STOP UPDATE: ", "SUCCESSFUL!");
 
                             SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString(getString(R.string.pref_stop_key), Stop);
+                            editor.putString(getString(R.string.pref_stop_arr_key), Stop);
                             editor.apply();
+
+                            Toast.makeText(context, R.string.updated_stop, Toast.LENGTH_SHORT).show();
 
                             if (UPDATE_SHIFT){
                                 updateShift();
                             }
-                            else progressBar.setVisibility(View.GONE);
-
-                            Toast.makeText(context, R.string.updated_stop, Toast.LENGTH_SHORT).show();
+                            else {
+                                progressBar.setVisibility(View.GONE);
+                                lock_button.setEnabled(true);
+                                lockUnlockTransition("LOCK");
+                            }
                         }
                         else {
                             Log.d("STOP UPDATE: ", task.getException().getMessage());
@@ -241,8 +240,6 @@ public class Fragment_Arrival_Shift extends Fragment {
     }
 
     private void updateShift() {
-        Toast.makeText(context, R.string.updating_shift, Toast.LENGTH_SHORT).show();
-
         final String shift = Shift == shiftI ? "I" : "II";
         Map<String, Object> data = new HashMap<>();
         data.put("SHIFT", shift);
@@ -256,15 +253,17 @@ public class Fragment_Arrival_Shift extends Fragment {
                             Log.d("SHIFT UPDATE: ", "SUCCESSFUL!");
 
                             SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString(getString(R.string.pref_shift_key), shift);
+                            editor.putString(getString(R.string.pref_shift_arr_key), shift);
                             editor.apply();
 
                             progressBar.setVisibility(View.GONE);
+                            lock_button.setEnabled(true);
+                            lockUnlockTransition("LOCK");
 
                             Toast.makeText(context, R.string.updated_shift, Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Log.d("SHIFT UPDATE: ", "NOT SUCCESSFUL!");
+                            Log.d("SHIFT UPDATE: ", task.getException().getMessage());
                         }
                     }
                 });
@@ -273,22 +272,6 @@ public class Fragment_Arrival_Shift extends Fragment {
     private void lockUnlockTransition(String LOCK_UNLOCK){
         if (LOCK_UNLOCK.equals("UNLOCK")) {
             // Background
-            lock_button.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.button_lock_ul));
-
-            // Icon and its Color
-            lock_button.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getContext(),R.drawable.lock_open), null, null, null);
-            lock_button.getCompoundDrawables()[0].setColorFilter(ContextCompat.getColor(getContext(), R.color.button_unlocked_bg), PorterDuff.Mode.SRC_IN);
-
-            //Text
-            lock_button.setText(R.string.choice_unlocked);
-            lock_button.setTextColor(ContextCompat.getColor(getContext(), R.color.button_unlocked_bg));
-
-            onLock_overlay.setVisibility(View.GONE);
-
-            isLocked = false;
-        }
-        else if (LOCK_UNLOCK.equals("LOCK")){
-            // Background
             lock_button.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.button_lock_l));
 
             // Icon
@@ -296,8 +279,24 @@ public class Fragment_Arrival_Shift extends Fragment {
             lock_button.getCompoundDrawables()[0].setColorFilter(ContextCompat.getColor(getContext(), R.color.white), PorterDuff.Mode.SRC_IN);
 
             //Text
-            lock_button.setText(R.string.choice_locked);
+            lock_button.setText(R.string.choice_lock);
             lock_button.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+
+            onLock_overlay.setVisibility(View.GONE);
+
+            isLocked = false;
+        }
+        else if (LOCK_UNLOCK.equals("LOCK")){
+            // Background
+            lock_button.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.button_lock_ul));
+
+            // Icon and its Color
+            lock_button.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getContext(),R.drawable.lock_open), null, null, null);
+            lock_button.getCompoundDrawables()[0].setColorFilter(ContextCompat.getColor(getContext(), R.color.button_unlocked_bg), PorterDuff.Mode.SRC_IN);
+
+            //Text
+            lock_button.setText(R.string.choice_unlock);
+            lock_button.setTextColor(ContextCompat.getColor(getContext(), R.color.button_unlocked_bg));
 
             onLock_overlay.setVisibility(View.VISIBLE);
 
