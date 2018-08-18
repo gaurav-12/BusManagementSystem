@@ -2,22 +2,47 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bms.gaurav.busmanagementsystem">
 
+    <!--
+    Connect to the network
+    In order to perform network operations in your application, your manifest must include the following permissions.
+    In the latest release of Google Play, Google removed the need to ask permission for internet as "most apps need it anyways nowadays". However, for users who have older versions, it is still recommended to leave the code below in your manifest
+    -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".Activity_SignUp"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".Activity_UserProfile"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".Activity_LaunchScreen"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity_SignUp" />
-        <activity android:name=".Activity_UserProfile"></activity>
+
     </application>
 
 </manifest>

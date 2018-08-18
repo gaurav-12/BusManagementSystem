@@ -25,15 +25,15 @@
                 android:textColor="@color/title_text" />
 
             <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/stops_spinner"
+                android:id="@+id/stops_spinner_arr"
                 android:layout_width="200dp"
-                android:layout_height="42dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/stops_spinner"
+                android:background="@drawable/stops_spinner_arr"
                 android:spinnerMode="dialog"
                 android:textAlignment="center"
-                android:theme="@style/Base.ThemeOverlay.AppCompat.Light" />
+                android:theme="@style/Base.ThemeOverlay.AppCompat" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -45,6 +45,7 @@
                 android:textColor="@color/title_text" />
 
             <RadioGroup
+                android:id="@+id/radio_group_shift_arr"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
@@ -56,6 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:checked="true"
                     android:text="@string/shift_1"
                     android:textColor="@color/title_text"
                     app:buttonTint="@color/colorPrimaryDark" />
@@ -80,9 +82,18 @@
             android:layout_alignBottom="@+id/arr_linear_layout"
             android:layout_alignTop="@+id/arr_linear_layout"
             android:clickable="true"
-            android:contentDescription="@string/choice_locked"
-            android:visibility="invisible"
+            android:contentDescription="@string/choice_lock"
+            android:focusable="true"
+            android:visibility="gone"
             app:srcCompat="@color/onlock_overlay" />
+
+        <ProgressBar
+            android:id="@+id/progressBar_arr"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/lock_button_arr"
@@ -102,7 +113,7 @@
             android:paddingLeft="90dp"
             android:paddingRight="80dp"
             android:paddingStart="90dp"
-            android:text="@string/choice_unlocked"
+            android:text="@string/choice_unlock"
             android:textColor="@color/button_unlocked_bg"
             android:textSize="18sp" />
     </RelativeLayout>

@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent_SnackBar_signin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,7 +21,7 @@
         android:textStyle="bold" />
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/signIn_Title"
         android:layout_centerHorizontal="true"
@@ -31,18 +32,19 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/textInputLayout_normal"
-            android:theme="@style/AppTheme.TextInputLayout_SignIn">
+            android:theme="@style/AppTheme.TextInputLayout_SignIn"
+            app:hintEnabled="false">
 
             <EditText
-                android:id="@+id/challan_num_SignIn"
+                android:id="@+id/enroll_num_SignIn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/enter_challan_num"
+                android:hint="@string/enter_enroll_num"
                 android:inputType="text"
                 android:maxLines="1"
                 android:textColor="@android:color/background_dark"
-                android:textSize="18sp" />
+                android:textColorHint="@color/edittext_hint"
+                android:textSize="16sp" />
 
 
         </android.support.design.widget.TextInputLayout>
@@ -50,8 +52,9 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/textInputLayout_normal"
-            android:theme="@style/AppTheme.TextInputLayout_SignIn">
+            android:layout_marginTop="20dp"
+            android:theme="@style/AppTheme.TextInputLayout_SignIn"
+            app:hintEnabled="false">
 
             <EditText
                 android:id="@+id/password_SignIn"
@@ -61,7 +64,8 @@
                 android:inputType="textWebPassword"
                 android:maxLines="1"
                 android:textColor="@android:color/background_dark"
-                android:textSize="18sp" />
+                android:textColorHint="@color/edittext_hint"
+                android:textSize="16sp" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
@@ -69,19 +73,19 @@
             style="@style/AppTheme.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="50dp"
             android:background="@drawable/button_primary_b"
             android:text="@string/sign_in"
             android:textAllCaps="false" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
         android:orientation="vertical">
 
         <TextView
@@ -89,20 +93,40 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/or_signup_text"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@android:color/darker_gray"
+            android:textSize="13sp" />
 
         <Button
             android:id="@+id/to_signup"
             style="@style/AppTheme.Button.Sec"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="36dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:background="@drawable/button_secondary_p"
             android:text="@string/sign_up"
             android:textAllCaps="false"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            android:textStyle="bold" />
     </LinearLayout>
+
+    <View
+        android:id="@+id/progress_overlay_signin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/offwhite"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_signin"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
 
 </RelativeLayout>

@@ -1,64 +1,91 @@
 package com.bms.gaurav.busmanagementsystem;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.support.annotation.ColorInt;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.ColorUtils;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.RelativeLayout;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Activity_UserProfile extends AppCompatActivity {
-    String challanNum;
+    private FirebaseAuth mAuth;
 
-    ViewPager viewPager;
-    FragmentPager_Adapter adapter;
-    TabLayout tabLayout;
+    private DrawerLayout mDrawerLayout;
+    private ViewPager viewPager;
+    private FragmentPager_Adapter adapter;
+    private TabLayout tabLayout;
 
-    AppBarLayout appBar;
-    TransitionDrawable appBar_BG;
+    private Toolbar toolBar;
+    private AppBarLayout appBar;
+    private TransitionDrawable appBar_BG;
+
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
 
-        appBar = (AppBarLayout)findViewById(R.id.appbar_profile);
+        sharedPreferences = getSharedPreferences(getString(R.string.bms_preference_name), MODE_PRIVATE);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        SetNavigationItemSelectedListener();
+
+        appBar = findViewById(R.id.appbar_profile);
         appBar_BG = (TransitionDrawable)appBar.getBackground();
 
-        challanNum = getIntent().getExtras().getString("ChallanNum");   // Getting the challan number sent by the login activity's intent's extras
+        toolBar = findViewById(R.id.toolbar_profile);
+        setSupportActionBar(toolBar);     // ** It will set the Toolbar as the ActionBar, with the Default menu
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_nav_drawer);   // Adding NavigationDrawer icon on the AppBar.
 
-        setSupportActionBar((Toolbar)findViewById(R.id.toolbar_profile));     // ** It will set the Toolbar as the ActionBar, with the Default menu
-        //setStandAloneToolbar();
+//        TODO: Make the statement below work!
+//        toolBar.setTitle(mAuth.getCurrentUser().getDisplayName());
 
-        viewPager = (ViewPager)findViewById(R.id.view_pager_profile); // Find the view pager that will allow the user to swipe between fragments
+        viewPager = findViewById(R.id.view_pager_profile); // Find the view pager that will allow the user to swipe between fragments
 
         // Create an adapter that knows which fragment should be shown on each page
         adapter = new FragmentPager_Adapter(this, getSupportFragmentManager());
 
         viewPager.setAdapter(adapter);  // Set the adapter onto the view pager
-        tabLayout = (TabLayout)findViewById(R.id.tabLayout_Profile);
+        tabLayout = findViewById(R.id.tabLayout_Profile);
         tabLayout.setupWithViewPager(viewPager, true);
 
         setOnTabSelectListener();
         setupTabIcon();
+    }
+
+    private void SetNavigationItemSelectedListener() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                // close drawer when item is tapped
+                mDrawerLayout.closeDrawers();
+
+                // TODO : Add code here to update the UI based on the item selected
+
+                return true;
+            }
+        });
     }
 
     private void setupTabIcon() {
@@ -74,9 +101,6 @@ public class Activity_UserProfile extends AppCompatActivity {
 
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
 
-            // ** Colors **
-            int primaryDark = ContextCompat.getColor(Activity_UserProfile.this, R.color.colorPrimaryDark);
-            int accentDark = ContextCompat.getColor(Activity_UserProfile.this, R.color.colorAccentDark);
             // ****
 
             @Override
@@ -104,33 +128,6 @@ public class Activity_UserProfile extends AppCompatActivity {
         });
     }
 
-    private void setStandAloneToolbar() {
-    // *** Here we define a Standalone Toolbar, then its Menu's Item's click listener, and finally we inflate the menu on the Toolbar.
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar_profile);
-
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.logout :
-
-                        // Will make the user Logout.
-
-                        Intent i = new Intent(Activity_UserProfile.this, MainActivity.class);
-                        startActivity(i);
-
-                        finish();
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
-
-        toolbar.inflateMenu(R.menu.options_menu_profile);
-    // ***
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -153,15 +150,23 @@ public class Activity_UserProfile extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.logout :
+            case R.id.logout :  // Logout option on Toolbar menu.
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.apply();
 
-                // Will make the user Logout.
+                mAuth.signOut();
 
                 Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);
 
                 finish();
                 return true;
+
+            case android.R.id.home :    // Navigation Drawer icon on Toolbar.
+                mDrawerLayout.openDrawer(GravityCompat.START, true);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
