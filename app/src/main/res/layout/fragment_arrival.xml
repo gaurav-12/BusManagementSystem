@@ -27,13 +27,13 @@
             <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/stops_spinner_arr"
                 android:layout_width="200dp"
-                android:layout_height="42dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/stops_spinner_arr"
                 android:spinnerMode="dialog"
                 android:textAlignment="center"
-                android:theme="@style/Base.ThemeOverlay.AppCompat.Light" />
+                android:theme="@style/Base.ThemeOverlay.AppCompat" />
 
             <TextView
                 android:layout_width="match_parent"

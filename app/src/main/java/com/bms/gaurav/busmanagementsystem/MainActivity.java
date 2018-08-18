@@ -268,9 +268,10 @@ public class MainActivity extends AppCompatActivity {
                             editor.putString(getString(R.string.pref_shift_dep_key), null);
                             editor.apply();
 
-                            Intent i = new Intent(MainActivity.this, Activity_UserProfile.class);
-                            startActivity(i);
-                            finish();
+//                            No need of Intent as AuthStateListener will do the work for us.
+//                            Intent i = new Intent(MainActivity.this, Activity_UserProfile.class);
+//                            startActivity(i);
+//                            finish();
                         }
                         else {
                             Log.d("SIGN IN ERROR: ", task.getException().getMessage());

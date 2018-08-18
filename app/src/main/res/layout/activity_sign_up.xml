@@ -9,7 +9,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/sign_up_title"
+        android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="?attr/actionBarSize"
@@ -23,7 +23,7 @@
     <LinearLayout
         android:layout_width="260dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sign_up_title"
+        android:layout_below="@+id/head"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
@@ -119,6 +119,7 @@
                 android:hint="@string/password_hint"
                 android:inputType="textWebPassword"
                 android:maxLines="1"
+                android:nextFocusDown="@id/signup"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 android:textColor="@android:color/background_dark"
@@ -127,41 +128,16 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <FrameLayout
+        <Button
+            android:id="@+id/signup"
+            style="@style/AppTheme.Button"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <Button
-                android:id="@+id/signup"
-                style="@style/AppTheme.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/button_primary_p"
-                android:text="@string/sign_up"
-                android:textAllCaps="false"
-                android:visibility="visible" />
-
-            <TextView
-                android:id="@+id/password_rules_textview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:alpha="0"
-                android:background="@drawable/tooltip_bg"
-                android:clickable="false"
-                android:focusableInTouchMode="false"
-                android:fontFamily="sans-serif-condensed"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="20dp"
-                android:text="@string/password_rules"
-                android:textAllCaps="false"
-                android:textColor="#fe4c0000"
-                android:textSize="14sp"
-                android:visibility="visible" />
-
-        </FrameLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/button_primary_p"
+            android:text="@string/sign_up"
+            android:textAllCaps="false"
+            android:visibility="visible" />
 
     </LinearLayout>
 
@@ -197,6 +173,28 @@
             android:textStyle="bold" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/password_rules_textview"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:alpha="0"
+        android:background="@drawable/tooltip_bg"
+        android:clickable="false"
+        android:focusableInTouchMode="false"
+        android:fontFamily="sans-serif-condensed"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:text="@string/password_rules"
+        android:textAllCaps="false"
+        android:textColor="#fe4c0000"
+        android:textSize="14sp"
+        android:visibility="visible" />
 
     <View
         android:id="@+id/progress_overlay_signup"
