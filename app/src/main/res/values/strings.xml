@@ -43,14 +43,17 @@
     <string name="firestore_doc_get_failure">Some error occurred, please try after some time</string>
     <string name="play_services_error">Seems like your device is not supported for Google Play Services</string>
     <string name="play_services_cancelled">Google Play Service must be Installed or Enabled</string>
-    <string name="invalid_mobile_num">Error Signing In. Please check the Mobile Number.</string>
+    <string name="invalid_mobile_num">
+        Please enter valid mobile number.\n
+        Example: +917746055181
+    </string>
     <string name="mobile_num_already_exist">The Mobile Number is already in use.</string>
     <string name="mobile_num_exist_check_error">An Error occurred while Signing Up. Please retry later to resolve.</string>
     <string name="verification_failure">An Error occurred on our side. Please retry later to resolve.</string>
-    <string name="sign_up_error">An error occurred while creating account. Please retry later to resolve.</string>
+    <string name="sign_up_error">An error occurred while Signup. Please retry later to resolve.</string>
     <string name="empty_fields">Please fill the field(s).</string>
     <string name="enter_enroll_num">Enrollment Number</string>
-    <string name="enter_email_num">Email</string>
+    <string name="enter_email">Email</string>
     <string name="signup_fields_mismatch">Fields entered did not match. Try rechecking the input.</string>
 
     <string name="password_rules">
@@ -69,10 +72,27 @@
     <string name="pref_shift_dep_key">SHIFT_DEP</string>
     <string name="pref_stop_arr_key">STOP_ARR</string>
     <string name="pref_shift_arr_key">SHIFT_ARR</string>
+    <string name="svvv">SVVV</string>
+    <string name="enter_name">Name</string>
+    <string name="enter_chaalan_num">Chaalan Number</string>
+    <string name="enter_mob_num">Mobile Number</string>
+    <string name="sign_up_next">NEXT</string>
+    <string name="acc_type_student">Student</string>
+    <string name="acc_type_faculty">Faculty</string>
+    <string name="acc_type">Choose account type</string>
+    <string name="enter_enroll_emp_num">Enrollment num/Employee Id</string>
+    <string name="shift">shift</string>
+    <string name="na">na</string>
+    <string name="stop">stop</string>
 
     <string-array name="stops_list">
         <item>Indore</item>
         <item>Ujjain</item>
         <item>Dewas</item>
+    </string-array>
+
+    <string-array name="acc_type">
+        <item>Student</item>
+        <item>Faculty</item>
     </string-array>
 </resources>

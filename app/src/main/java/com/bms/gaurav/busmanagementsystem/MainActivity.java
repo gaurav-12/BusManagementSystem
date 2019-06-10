@@ -1,6 +1,7 @@
 package com.bms.gaurav.busmanagementsystem;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -8,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -35,14 +37,15 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int PLAY_SERVICES_REQUEST_CODE = 0;
     private static final int SIGN_UP_REQUEST_CODE = 1;
+    private static final String STUDENT = "Student";
+    private static final String FACULTY = "Faculty";
 
-    Button signIn_Button;
-    Button signUp_Button;
-    EditText enrollNum;
-    EditText Password;
-    RelativeLayout relativeLayout;
-    private ProgressBar progressBarSignup;
-    private View progressBarSignup_Overlay;
+    private Button signIn_Button, signUp_Button, accType_Button;
+    private String AccType;
+    private EditText enrollNum, Password;
+    private RelativeLayout relativeLayout;
+    private ProgressBar progressBar;
+    private AlertDialog.Builder accTypeDialog;
 
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -58,11 +61,14 @@ public class MainActivity extends AppCompatActivity {
 
         signIn_Button = findViewById(R.id.signin);
         signUp_Button = findViewById(R.id.to_signup);
-        enrollNum = findViewById(R.id.enroll_num_SignIn);
-        Password = findViewById(R.id.password_SignIn);
-        relativeLayout = findViewById(R.id.parent_SnackBar_signin);
-        progressBarSignup = findViewById(R.id.progressBar_signin);
-        progressBarSignup_Overlay = findViewById(R.id.progress_overlay_signin);
+        AccType = STUDENT;
+        accType_Button = findViewById(R.id.acc_type_button_signin);
+        enrollNum = findViewById(R.id.enroll_num_signIn);
+        Password = findViewById(R.id.password_signIn);
+        relativeLayout = findViewById(R.id.parent_snackbar_signin);
+        progressBar = findViewById(R.id.progressBar_signin);
+
+        initDialog();
 
         mAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -82,6 +88,27 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(getString(R.string.bms_preference_name), MODE_PRIVATE);
 
         registerButtonsClickListener();
+    }
+
+    private void initDialog() {
+        accTypeDialog = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog);
+        accTypeDialog.setTitle(R.string.acc_type);
+        accTypeDialog.setItems(R.array.acc_type,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                AccType = STUDENT;
+                                accType_Button.setText(STUDENT);
+                                break;
+                            case 1:
+                                AccType = "FACULTY";
+                                accType_Button.setText(FACULTY);
+                                break;
+                        }
+                    }
+                });
     }
 
     @Override
@@ -160,6 +187,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void registerButtonsClickListener() {
+        accType_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                accTypeDialog.show();
+            }
+        });
         signUp_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,9 +216,9 @@ public class MainActivity extends AppCompatActivity {
                 else if(fieldsValid()) {
                     Log.d("SIGN IN :", "FIELDS ARE VALID!!");
 
-                    // ProgressBar and overlay should be visible now, in case the processing of getting the document takes time.
-                    progressBarSignup_Overlay.setVisibility(View.VISIBLE);
-                    progressBarSignup.setVisibility(View.VISIBLE);
+                    // Disable fields and ProgressBar should be visible now, in case the processing of getting the document takes time.
+                    enableFields(false);
+                    progressBar.setVisibility(View.VISIBLE);
 
                     // Look for input enroll Number's  document in Firestore's "users" collection (in SERVER and not in CACHE).
                     USERS_LIST.document(enrollNum.getText().toString()).get(Source.SERVER)
@@ -217,9 +250,9 @@ public class MainActivity extends AppCompatActivity {
                                             else {
                                                 Log.d("SIGN IN :", "ACCOUNT IS NOT ACTIVE!");
 
-                                                // Since the processing is completed, no need of overlay and progressBar.
-                                                progressBarSignup_Overlay.setVisibility(View.GONE);
-                                                progressBarSignup.setVisibility(View.GONE);
+                                                // Disable fields and ProgressBar should be visible now, in case the processing of getting the document takes time.
+                                                enableFields(true);
+                                                progressBar.setVisibility(View.GONE);
 
                                                 Snackbar.make(relativeLayout, R.string.no_acc_exist, Snackbar.LENGTH_LONG)
                                                         .show();
@@ -230,9 +263,9 @@ public class MainActivity extends AppCompatActivity {
                                         else {
                                             Log.d("SIGN IN :", "DOCUMENT DOES NOT EXIST!!");
 
-                                            // Since the processing is completed, no need of overlay and progressBar.
-                                            progressBarSignup_Overlay.setVisibility(View.GONE);
-                                            progressBarSignup.setVisibility(View.GONE);
+                                            // Disable fields and ProgressBar should be visible now, in case the processing of getting the document takes time.
+                                            enableFields(true);
+                                            progressBar.setVisibility(View.GONE);
 
                                             Snackbar.make(relativeLayout, R.string.enroll_num_not_found, Snackbar.LENGTH_LONG).show();
                                         }
@@ -242,9 +275,9 @@ public class MainActivity extends AppCompatActivity {
                                     else {
                                         Log.d("SIGN IN :", "TASK NOT SUCCESSFUL: " + task.getException());
 
-                                        // Since the processing is completed, no need of overlay and progressBar.
-                                        progressBarSignup_Overlay.setVisibility(View.GONE);
-                                        progressBarSignup.setVisibility(View.GONE);
+                                        // Disable fields and ProgressBar should be visible now, in case the processing of getting the document takes time.
+                                        enableFields(true);
+                                        progressBar.setVisibility(View.GONE);
 
                                         Snackbar.make(relativeLayout, R.string.firestore_doc_get_failure, Snackbar.LENGTH_LONG).show();
                                     }
@@ -253,6 +286,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void enableFields(boolean enable) {
+        int newColor = enable? getResources().getColor(R.color.colorPrimary): getResources().getColor(R.color.disabled);
+        accType_Button.setEnabled(enable);
+        accType_Button.setTextColor(newColor);
+
+        enrollNum.setEnabled(enable);
+        Password.setEnabled(enable);
+        signIn_Button.setEnabled(enable);
     }
 
     private void Signin(String userEmail) {
@@ -276,9 +319,9 @@ public class MainActivity extends AppCompatActivity {
                         else {
                             Log.d("SIGN IN ERROR: ", task.getException().getMessage());
 
-                            // Since the processing is completed, no need of overlay and progressBar.
-                            progressBarSignup_Overlay.setVisibility(View.GONE);
-                            progressBarSignup.setVisibility(View.GONE);
+                            // Disable fields and ProgressBar should be visible now, in case the processing of getting the document takes time.
+                            enableFields(true);
+                            progressBar.setVisibility(View.GONE);
 
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException){
                                 Snackbar.make(relativeLayout, R.string.wrong_Input, Snackbar.LENGTH_LONG).show();

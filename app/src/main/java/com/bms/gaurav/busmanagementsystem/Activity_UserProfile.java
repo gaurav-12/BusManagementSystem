@@ -5,9 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -46,46 +44,10 @@ public class Activity_UserProfile extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
-        SetNavigationItemSelectedListener();
-
-        appBar = findViewById(R.id.appbar_profile);
-        appBar_BG = (TransitionDrawable)appBar.getBackground();
-
-        toolBar = findViewById(R.id.toolbar_profile);
         setSupportActionBar(toolBar);     // ** It will set the Toolbar as the ActionBar, with the Default menu
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_nav_drawer);   // Adding NavigationDrawer icon on the AppBar.
-
-//        TODO: Make the statement below work!
-//        toolBar.setTitle(mAuth.getCurrentUser().getDisplayName());
-
-        viewPager = findViewById(R.id.view_pager_profile); // Find the view pager that will allow the user to swipe between fragments
-
-        // Create an adapter that knows which fragment should be shown on each page
-        adapter = new FragmentPager_Adapter(this, getSupportFragmentManager());
-
-        viewPager.setAdapter(adapter);  // Set the adapter onto the view pager
-        tabLayout = findViewById(R.id.tabLayout_Profile);
-        tabLayout.setupWithViewPager(viewPager, true);
-
-        setOnTabSelectListener();
-        setupTabIcon();
-    }
-
-    private void SetNavigationItemSelectedListener() {
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                // close drawer when item is tapped
-                mDrawerLayout.closeDrawers();
-
-                // TODO : Add code here to update the UI based on the item selected
-
-                return true;
-            }
-        });
     }
 
     private void setupTabIcon() {

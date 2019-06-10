@@ -16,6 +16,11 @@
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
+    <style name="AppTheme.TextInputLayout_SignUp" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorControlNormal">@color/textInputLayout_normal</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+    </style>
+
     <style name="AppTheme.Button" parent="Base.Widget.AppCompat.Button">
         <item name="android:textColor">#fff</item>
         <item name="android:textStyle">bold</item>
@@ -35,4 +40,6 @@
     <style name="Apptheme.Toolbar.title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textStyle">bold</item>
     </style>
+
+
 </resources>
